@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
+    public static Scanner input = new Scanner(System.in);
+    public static String[][] jugadadores = new String[7][2];
     public static void main(String[] args) {
         String[] personaje = {"Lobo", "Lobo", "Aldeano", "Aldeano", "Aldeano", "Vidente", "Cupido"};
         ArrayList<Integer> idsAsignados = new ArrayList<>();
@@ -16,4 +19,11 @@ public class Main {
             System.out.println(personaje[i] + " corresponde a id" + " " + idsAsignados.get(i));
         }
     }
+    private static String pedirNombre () {
+        System.out.println("Ingresa tu nombre: ");
+        String Nombre = input.nextLine();
+        return Nombre;
+    }
+
+
 }
