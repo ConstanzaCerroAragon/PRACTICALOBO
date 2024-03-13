@@ -81,6 +81,9 @@ public class Main {
                 case "Cupido":
                     cupido(nombres);
                     break;
+                case "Vidente":
+                    vidente(nombres, roles);
+                    break;
                 case "Lobo":
                     lobo();
                     break;
@@ -89,9 +92,6 @@ public class Main {
                     break;
                 case "Bruja":
                     bruja();
-                    break;
-                case "Vidente":
-                    vidente(nombres, roles);
                     break;
             }
 
@@ -123,7 +123,9 @@ public class Main {
         int index = nombres.indexOf(nombreJugador);
         if (index != -1) {
             String rolJugador = roles.get(index);
-            System.out.println("El jugador");
+            System.out.println("El jugador" + nombreJugador + "tiene el rol: " + rolJugador);
+        }else{
+            System.out.println("El nombre del jugador no existe en la partida");
         }
     }
 
