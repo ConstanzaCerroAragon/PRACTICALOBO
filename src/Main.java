@@ -11,6 +11,7 @@ public class Main {
         ArrayList<String> nombres = new ArrayList<>();
         ArrayList<Integer> ids = new ArrayList<>();
         ArrayList<String> roles = new ArrayList<>();
+        ArrayList<String> accionLobos = new ArrayList<>();
 
         registrarJugadores(nombres, ids);
         asignarRoles(roles);
@@ -20,7 +21,7 @@ public class Main {
         System.out.println("\nHora de comenzar a jugar.");
         System.out.println("¡Que comiencen las rondas!");
 
-        jugar(nombres, roles);
+        jugar(nombres, roles, accionLobos);
     }
 
     public static void registrarJugadores(ArrayList<String> nombres, ArrayList<Integer> ids){
@@ -72,7 +73,7 @@ public class Main {
     }
 
 
-    public static void jugar(ArrayList<String> nombres, ArrayList<String> roles) {
+    public static void jugar(ArrayList<String> nombres, ArrayList<String> roles, ArrayList<String> accionLobos) {
 
         System.out.println("\n¡Es de noche en la aldea!");
 
@@ -129,7 +130,54 @@ public class Main {
         }
     }
 
+    public static void lobo(ArrayList<String> nombres, ArrayList<String> accionLobos) {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Se despiertan los lobos y deciden a quien quieren matar esta noche");
+
+        System.out.println("Escribe el nombre del jugador que quieren matar");
+        String jugadorMatado = scanner.nextLine();
+
+        if (nombres.contains(jugadorMatado)) {
+            accionLobos.add("Atacaron a " + jugadorMatado);
+        }else {
+            System.out.println("Ingrese un nombre valido");
+        }
+    }
+
+    public static void bruja(boolean pocionSalvacion, boolean pocionMatar, ArrayList<String> accionesLobos) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Se despierta la bruja!! y decide si usar sus pocimas");
+
+        if (!pocionSalvacion) {
+            System.out.println("¿Quieres usar la poción de salvación? (s/n)");
+            String respuestaSalvacion = scanner.nextLine();
+
+            if (respuestaSalvacion.equalsIgnoreCase("s")) {
+                System.out.println("El jugador atacado por los lobos es: " + accionesLobos.get(accionesLobos.size() - 1));
+                System.out.println("¿Quieres salvarlo? (s/n)");
+                String respuestaSalvar = scanner.nextLine();
+                if (respuestaSalvar.equalsIgnoreCase("s")) {
+                    System.out.println("La bruja ha usado la poción de salvación para salvar al jugador atacado por los lobos.");
+                    pocionSalvacion = true;
+                }
+            }
+
+            if (!pocionMatar) {
+                System.out.println("¿Quieres usar la poción de matar? (s/n)");
+                String respuestaMatar = scanner.nextLine();
+
+                if (respuestaMatar.equalsIgnoreCase("s")) {
+                    System.out.println("¿A quién quieres matar?");
+                    String jugadorAMatar = scanner.nextLine();
+
+                    // Lógica para matar al jugador...
+                    System.out.println("La bruja ha usado la poción de matar para eliminar a " + jugadorAMatar + ".");
+                    accionesLobos.add("La bruja ha matado a " + jugadorAMatar); // guardo el nombre del jugador matado
+                }
+            }
+        }
+    }
 
 
     public static void votacion(ArrayList<String> nombres) {
@@ -168,131 +216,6 @@ public class Main {
     }
 
     }
-
-
-
-
-
-
-
-
-/*
-    public void iniciarJuego() {
-        Scanner scanner = new Scanner(System.in);
-        jugadores = new ArrayList<>();
-        roles = new ArrayList<>();
-        enamorados = new ArrayList<>();
-
-        for (int i=1; i <= 7; i++) {
-            System.out.println("Nombre del Jugador " + i + ": ");
-            String nombreJugador = scanner.nextLine();
-            jugadores.add(nombreJugador);
-        }
-
-        //para que se mezclen los roles, y no salgan siempre en ese orden, es decir que el jugador uno tenga siempre el aldeano y asi, se usa la funcion
-        Collections.shuffle(roles);
-
-        //rellenamos los roles en el array list de roles
-        roles.add("Aldeano");
-        roles.add("Aldeano");
-        roles.add("Aldeano");
-        roles.add("Hombre Lobo");
-        roles.add("Hombre Lobo");
-        roles.add("Bruja");
-        roles.add("Cupido");
-
-        System.out.println("Los ");
-        //para asignar los nombres de los jugadores a un rol
-        for (int i = 0; i <= jugadores.size(); i++) {
-            String jugador = jugadores.get(i);
-            String rol = roles.get(i);
-            System.out.println(jugador + " es " + rol);
-        }
-
-        int noche = 1;
-        while (!verificarVictoria()) {
-            laNoche(noche);
-            noche++;
-        }
-
-    }
-
-    public void laNoche (int noche) {
-        System.out.println("Se ha hecho de noche.....");
-        System.out.println("Ahora si, comienza el juego.....");
-
-        for (String rol : roles ) {
-            if (rol.equals("Lobo")) {
-                System.out.println("Se despertaron los Lobos y deben asignar a una victima: ");
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Ingresar el nombre de la victima: ");
-                String victima = scanner.nextLine();
-                System.out.println("La victima elegida por los Lobos es: " +  victima);
-                break;
-            }
-        }
-
-        for (String rol : roles ) {
-            if (rol.equals("Bruja")) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("La bruja se despierta, y decide si usar alguna de sus pociones: ");
-                System.out.println("1-La Pocion Curativa");
-                System.out.println("2-La Pocion Veneno");
-                System.out.println("La bruja elije una opcion: ");
-                int opcion = scanner.nextInt();
-                scanner.nextLine();
-
-                if (opcion == 1) {
-                    System.out.println("La bruja a decidido usar la posicon Curativa.");
-                }else if (opcion == 2) {
-                    System.out.println("La bruja a decidido usar la pocion Veneno");
-                }else {
-                    System.out.println("Opcion no valida, ingrese 1 o 2");
-                }
-                break;
-            }
-        }
-
-        for (String rol : roles) {
-            if (rol.equals("Cupido")) {
-                System.out.println("Se despierta cupido, que unira y enamorara a dos jugadores");
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Elije al primer enamorado");
-                String enamorado1 = scanner.nextLine();
-                System.out.println("Elije al segundo enamorado");
-                String enamorado2 = scanner.nextLine();
-                enamorados.add(enamorado1);
-                enamorados.add(enamorado2);
-                System.out.println(enamorado1 + "y" + enamorado2 + "estan enamorados");
-                break;
-            }
-        }
-
-        if (verificarVictoria()) {
-            return;
-        }
-
-    }
-
-    private boolean verificarVictoria() {
-        int aldeanosRestantes = 0;
-        int lobosRestantes = 0;
-
-        for (String rol : roles){
-            if (rol.equals("Aldeano")) {
-                aldeanosRestantes++;
-            }else if (rol.equals("Lobo")){
-                lobosRestantes++;
-            }
-        }
-        return aldeanosRestantes <= lobosRestantes || lobosRestantes == 0;
-    }
-
-    public void elDia () {
-
-    }
-
-     */
 
 
 
