@@ -23,7 +23,7 @@ public class Main {
         System.out.println("\nHora de comenzar a jugar.");
         System.out.println("¡Que comiencen las rondas!");
 
-        jugar(nombres, roles, accionLobos, pocionSalvacion, pocionMatar, accionLobos);
+        jugar(nombres, roles, accionLobos, pocionSalvacion, pocionMatar);
     }
 
     public static void registrarJugadores(ArrayList<String> nombres, ArrayList<Integer> ids){
@@ -75,7 +75,7 @@ public class Main {
     }
 
 
-    public static void jugar(ArrayList<String> nombres, ArrayList<String> roles, ArrayList<String> accionLobos, boolean pocionSalvacion, boolean pocionMatar, ArrayList<String> accionesLobos) {
+    public static void jugar(ArrayList<String> nombres, ArrayList<String> roles, ArrayList<String> accionLobos, boolean pocionSalvacion, boolean pocionMatar) {
 
         System.out.println("\n¡Es de noche en la aldea!");
 
@@ -91,13 +91,13 @@ public class Main {
                     lobo(nombres, accionLobos);
                     break;
                 case "Bruja":
-                    bruja(pocionSalvacion, pocionMatar, accionesLobos);
+                    bruja(pocionSalvacion, pocionMatar, accionLobos);
                     break;
             }
 
         }
         // Votación
-        votacion(nombres);
+        votacion(nombres, accionLobos, roles);
     }
 
     public static void cupido(ArrayList<String> nombres) {
@@ -178,13 +178,29 @@ public class Main {
         }
     }
 
-    public static void votacion(ArrayList<String> nombres) {
+    public static void votacion(ArrayList<String> nombres, ArrayList<String> accionLobos, ArrayList<String> roles) {
         Scanner scanner = new Scanner(System.in);
         int[] votos = new int[nombres.size()];
 
         System.out.println("Es de día en la aldea! Todoos se despiertan, es hora de ver que ocurrio a la noche");
 
-        // Turno de votación
+        //el narrador hace saber quienes murieron por la noche
+        if (!accionLobos.isEmpty()) {
+            System.out.println("Lamentablemente durante la noche, ocurrieron muertes, y fuero: ");
+            List<String> jugadoresMuertos = new ArrayList<>();
+            for (String accion : accionLobos) {
+                System.out.println(accion);
+                String jugadorMuerto = accion.substring(10);
+                jugadoresMuertos.add(jugadorMuerto);
+            }
+            nombres.remove(jugadoresMuertos);
+        }else {
+            System.out.println("Afortunadamente nadie muerio durante la noche");
+        }
+
+        System.out.println("Ahora es tiempo de votar a quien se cree, que puede ser un lobo");
+
+        // turno de votación
         for (int i = 0; i < nombres.size(); i++) {
             System.out.println("Jugador " + nombres.get(i) + ", es tu turno de votar:");
             System.out.println("¿A quién votas para eliminar? (Escribe el nombre del jugador)");
@@ -210,10 +226,18 @@ public class Main {
         }
 
         // Anunciar jugador eliminado
-        System.out.println("El jugador " + nombres.get(jugadorEliminado) + " ha sido eliminado.");
+        String jugadorEliminadoNombre = nombres.get(jugadorEliminado);
+        System.out.println("El jugador " + jugadorEliminadoNombre + " ha sido eliminado.");
+        int index = nombres.indexOf(jugadorEliminadoNombre);
+        if (index != -1) {
+            String rolEliminado = roles.get(index);
+            System.out.println("El jugador " + jugadorEliminadoNombre + "era: " + rolEliminado);
+            nombres.remove(index);
+            roles.remove(index);
+        }
     }
 
-    }
+}
 
 
 
