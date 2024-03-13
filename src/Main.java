@@ -12,6 +12,8 @@ public class Main {
         ArrayList<Integer> ids = new ArrayList<>();
         ArrayList<String> roles = new ArrayList<>();
         ArrayList<String> accionLobos = new ArrayList<>();
+        boolean pocionSalvacion = false;
+        boolean pocionMatar = false;
 
         registrarJugadores(nombres, ids);
         asignarRoles(roles);
@@ -21,7 +23,7 @@ public class Main {
         System.out.println("\nHora de comenzar a jugar.");
         System.out.println("¡Que comiencen las rondas!");
 
-        jugar(nombres, roles, accionLobos);
+        jugar(nombres, roles, accionLobos, pocionSalvacion, pocionMatar, accionLobos);
     }
 
     public static void registrarJugadores(ArrayList<String> nombres, ArrayList<Integer> ids){
@@ -73,7 +75,7 @@ public class Main {
     }
 
 
-    public static void jugar(ArrayList<String> nombres, ArrayList<String> roles, ArrayList<String> accionLobos) {
+    public static void jugar(ArrayList<String> nombres, ArrayList<String> roles, ArrayList<String> accionLobos, boolean pocionSalvacion, boolean pocionMatar, ArrayList<String> accionesLobos) {
 
         System.out.println("\n¡Es de noche en la aldea!");
 
@@ -86,13 +88,10 @@ public class Main {
                     vidente(nombres, roles);
                     break;
                 case "Lobo":
-                    lobo();
-                    break;
-                case "Aldeano":
-                    aldeano();
+                    lobo(nombres, accionLobos);
                     break;
                 case "Bruja":
-                    bruja();
+                    bruja(pocionSalvacion, pocionMatar, accionesLobos);
                     break;
             }
 
@@ -179,12 +178,11 @@ public class Main {
         }
     }
 
-
     public static void votacion(ArrayList<String> nombres) {
         Scanner scanner = new Scanner(System.in);
         int[] votos = new int[nombres.size()];
 
-        System.out.println("\n¡Es de día en la aldea! Hora de votar quién será eliminado.");
+        System.out.println("Es de día en la aldea! Todoos se despiertan, es hora de ver que ocurrio a la noche");
 
         // Turno de votación
         for (int i = 0; i < nombres.size(); i++) {
