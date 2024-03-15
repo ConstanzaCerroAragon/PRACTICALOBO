@@ -1,3 +1,12 @@
+# Para ignorar todos los ficheros.
+*
+
+# Excepto los ficheros de Java:
+!*.java
+
+# Permite directorios para encontrar fitxeros .java
+!*/
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
